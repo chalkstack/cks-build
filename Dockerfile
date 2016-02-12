@@ -90,5 +90,5 @@ USER root
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 USER cks
 
-#TODO: add authentication.
+#TODO: add authentication & security, will base this on running this on gcloud vms.
 CMD jupyter notebook
