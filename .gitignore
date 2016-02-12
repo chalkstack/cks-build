@@ -1,0 +1,8 @@
+*~
+*.pyc
+*.h5
+*.csv
+*.db
+old
+nwrfcsdk
+test

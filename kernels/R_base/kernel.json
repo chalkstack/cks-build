@@ -1,0 +1,10 @@
+{
+ "argv": ["/miniconda/envs/R_base/bin/R",
+          "--slave",
+          "-e",
+          "IRkernel::main()",
+          "--args",
+          "{connection_file}"],
+ "display_name":"R_base",
+ "language":"R"
+}

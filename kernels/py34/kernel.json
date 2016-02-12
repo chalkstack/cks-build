@@ -1,0 +1,19 @@
+{
+ "display_name": "py34_base",
+ "language": "python",
+ "codemirror_mode": {
+  "version": 3,
+  "name": "ipython"
+ },
+ "argv": [
+  "/miniconda/envs/py34/bin/python",
+  "-c",
+  "from ipykernel.kernelapp import main; main()",
+  "-f",
+  "{connection_file}"
+ ],
+ "env": {
+  "PYTHONPATH": "/chalk/:/home/cks/cksdev:/home/cks",
+  "PYTHONSTARTUP": "/chalk/chalk_startup3.py"
+ }
+}
