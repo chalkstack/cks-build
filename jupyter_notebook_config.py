@@ -1,8 +1,6 @@
-c = get_config()
-
 # Set options for certfile, ip, password, and toggle off browser auto-opening
-c.NotebookApp.certfile = u'/etc/certs/mycert.pem'
-c.NotebookApp.keyfile = u'/etc/certs/mykey.key'
+c.NotebookApp.certfile = u'/etc/cks/mycert.pem'
+c.NotebookApp.keyfile = u'/etc/cks/mykey.key'
 
 # Set ip to '*' to bind on all interfaces (ips) for the public server
 c.NotebookApp.ip = '*'

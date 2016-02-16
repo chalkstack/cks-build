@@ -64,8 +64,12 @@ WORKDIR /home/cks
 
 # Install Jupyter
 RUN conda install -y jupyter ipyparallel
-RUN COPY jupyter_notebook_config.py /home/cks/.jupyter/jupyter_notebook_config.py
-RUN echo "NotebookApp.password = u'$(cat NotebookApp.password)'" >> /home/cks/.jupyter/jupyter_notebook_config.py
+RUN mkdir /home/cks/.jupyter
+COPY jupyter_notebook_config.py /home/cks/.jupyter/jupyter_notebook_config.py
+COPY NotebookApp.password /etc/cks/NotebookApp.password
+USER root
+RUN echo "c.NotebookApp.password = u'$(cat /etc/cks/NotebookApp.password)'" >> /home/cks/.jupyter/jupyter_notebook_config.py
+USER cks
 
 # Create default miniconda environments
 RUN conda create -y -n py27 --use-index-cache python=2.7
@@ -84,9 +88,10 @@ RUN jupyter kernelspec install --prefix=/miniconda /tmp/kernels/py34
 
 # Secure the notebook server
 USER root
-RUN mkdir /etc/certs
-COPY mycert.pem /etc/mycerts/mycert.pem
-COPY mykey.key /etc/mycerts/mykey.key
+COPY cks.password /etc/cks/cks.password
+COPY mycert.pem /etc/cks/mycert.pem
+COPY mykey.key /etc/cks/mykey.key
+RUN echo "cks:$(cat /etc/cks/cks.password)" | chpasswd
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

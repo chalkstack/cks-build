@@ -5,7 +5,25 @@ All under user `cks`, with default password `cks`.
 
 ##Installation
 
-Clone the git repository, enter the directory, and build the docker image;
+###Required files
+Certificates and passwords must be provided as separate files, to secure the notebook as documented in [*running a public notebook server](http://jupyter-notebook.readthedocs.org/en/latest/public_server.html#running-a-public-notebook-server).  The Dockerfile requires:
+
+ - `NotebookApp.password`: File containing hashed notebook password for secure connection to the notebook server.
+To generate this password use
+
+    from notebookapp.auth import passwd
+    passwd()
+
+ - `mycert.pem` and `mykey.key`: Self-signed certificates can be generated with
+
+    openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mykey.key -out mycert.pem
+
+ - `cks.password`: Linux password for the default (sudoer) user `cks`
+
+
+###Build
+
+Clone the git repository, generate the required files, enter the directory and build the docker image;
 
     /media/jake/cksdevs/transnet/build/stackrun.sh
     cd cks-build
