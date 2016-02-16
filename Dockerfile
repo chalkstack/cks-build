@@ -64,11 +64,8 @@ WORKDIR /home/cks
 
 # Install Jupyter
 RUN conda install -y jupyter ipyparallel
-RUN jupyter notebook --generate-config
-RUN echo "\nc.NotebookApp.ip = '*'\n\
-c.NotebookApp.open_browser = False\n\
-c.NotebookApp.server_extensions.append('ipyparallel.nbextension')\n\
-" >> /home/cks/.jupyter/jupyter_notebook_config.py
+RUN COPY jupyter_notebook_config.py /home/cks/.jupyter/jupyter_notebook_config.py
+RUN echo "NotebookApp.password = u'$(cat NotebookApp.password)'" >> /home/cks/.jupyter/jupyter_notebook_config.py
 
 # Create default miniconda environments
 RUN conda create -y -n py27 --use-index-cache python=2.7
@@ -77,18 +74,22 @@ RUN conda install -y --name=py27 --use-index-cache \
 RUN conda create -y -n py34 --use-index-cache python=3.4
 RUN conda install -y --name=py34 --use-index-cache \
     ipython ipykernel jupyter_client
-RUN conda create -y -n R_base -c r r-essentials
+#RUN conda create -y -n R_base -c r r-essentials
 
 # Install Kernels
 COPY kernels /tmp/kernels
 RUN jupyter kernelspec install --prefix=/miniconda /tmp/kernels/py27
 RUN jupyter kernelspec install --prefix=/miniconda /tmp/kernels/py34
-RUN jupyter kernelspec install --prefix=/miniconda /tmp/kernels/R_base
+#RUN jupyter kernelspec install --prefix=/miniconda /tmp/kernels/R_base
+
+# Secure the notebook server
+USER root
+RUN mkdir /etc/certs
+COPY mycert.pem /etc/mycerts/mycert.pem
+COPY mykey.key /etc/mycerts/mykey.key
 
 # Clean up
-USER root
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 USER cks
 
-#TODO: add authentication.
 CMD jupyter notebook

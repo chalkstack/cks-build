@@ -6,3 +6,6 @@
 old
 nwrfcsdk
 test
+*.password
+*.key
+*.pem
