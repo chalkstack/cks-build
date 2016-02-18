@@ -1,12 +1,12 @@
 {
- "display_name": "py27_base",
+ "display_name": "py35_base",
  "language": "python",
  "codemirror_mode": {
   "version": 3,
   "name": "ipython"
  },
  "argv": [
-  "/miniconda/envs/py27/bin/python",
+  "/miniconda/envs/py35/bin/python",
   "-c",
   "from ipykernel.kernelapp import main; main()",
   "-f",
@@ -14,6 +14,6 @@
  ],
  "env": {
   "PYTHONPATH": "/home/cks/cksdev:/home/cks",
-  "PYTHONSTARTUP": "/home/cks/cksdev/python2_startup.py"
+  "PYTHONSTARTUP": "/home/cks/cksdev/python3_startup.py"
  }
 }
