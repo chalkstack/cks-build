@@ -62,7 +62,7 @@ RUN cd /tmp && \
 RUN cd /usr/local && ln -s spark-${APACHE_SPARK_VERSION}-bin-hadoop2.6 spark
 
 # Mesos dependencies
-RUN sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E56151BF && \
+RUN sudo apt-key adv --keyserver-options http-proxy=$HTTP_PROXY --keyserver hkp://keyserver.ubuntu.com:80 --recv E56151BF && \
     DISTRO=ubuntu && \
     CODENAME=trusty && \
     echo "deb http://repos.mesosphere.io/${DISTRO} ${CODENAME} main" > /etc/apt/sources.list.d/mesosphere.list && \
@@ -92,6 +92,16 @@ RUN jq --arg v "${CONDA_DIR}/envs/py27/bin/python" \
         '.["env"]["PYSPARK_PYTHON"]=$v' \
         ${CONDA_DIR}/share/jupyter/kernels/py27/kernel.json > /tmp/kernel.json && \
         mv /tmp/kernel.json $CONDA_DIR/share/jupyter/kernels/py27/kernel.json
+
+# Install Freetds and ODBC connectors
+USER root
+RUN apt-get update && apt-get install -y freetds-dev freetds-bin tdsodbc unixodbc unixodbc-dev
+ADD freetds.conf /etc/freetds/freetds.conf
+ADD odbcinst.ini /etc/odbcinst.ini
+ADD odbc.ini     /etc/odbc.ini
+USER $USERNAME
+RUN conda install -y sqlalchemy pyodbc
+RUN conda install -y -n py27 sqlalchemy pyodbc
 
 # Add Tini. Tini operates as a process subreaper for jupyter. This prevents
 # kernel crashes.
