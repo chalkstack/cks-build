@@ -3,6 +3,7 @@
 *.h5
 *.csv
 *.db
-old
-nwrfcsdk
-test
+*old
+*.key
+*.pem
+*.cert
